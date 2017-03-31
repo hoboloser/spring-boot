@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="org.bin.schema.entity.SeckillOrder">
+ 	<resultMap type="SeckillOrder" id="seckillOrderMap">
+ 		<result property="stockId" column="stock_id" jdbcType="BIGINT"/>
+ 		<result property="userId" column="use_id" jdbcType="BIGINT"/>
+ 		<result property="usePhone" column="use_phone" jdbcType="BIGINT"/>
+ 		<result property="seckillTime" column="seckill_time" jdbcType="TIMESTAMP"/>
+ 		<result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+ 	</resultMap>
+ 	
+ 	<insert id="insertSeckillOrder" parameterType="SeckillOrder" useGeneratedKeys="true" keyProperty="id">
+ 		insert ignore into 
+ 			seckill_order(`stock_id`,`use_id`,`use_phone`,`seckill_time`,`create_time`)
+ 		values(
+ 			#{stockId, jdbcType=BIGINT},
+			#{userId, jdbcType=BIGINT},
+			#{usePhone, jdbcType=VARCHAR},
+			#{seckillTime, jdbcType=TIMESTAMP},
+			#{createTime, jdbcType=TIMESTAMP}
+ 		)
+ 	</insert>
+ 	
+ 	<select id="getSuccessKilled" resultMap="seckillOrderMap">
+ 		select * from seckill_order
+ 	</select>
+ 	
+ 	
+ 	<select id="insertOrderWithProduce" statementType="CALLABLE" >
+ 		call execute_seckill(
+ 			#{stockId, jdbcType=BIGINT, mode=IN},
+ 			#{userId, jdbcType=BIGINT, mode=IN},
+ 			#{usePhone, jdbcType=BIGINT, mode=IN},
+ 			#{seckillTime, jdbcType=TIMESTAMP, mode=IN},
+ 			#{result, jdbcType=INTEGER, mode=OUT}
+ 		)
+ 	</select>
+ </mapper>

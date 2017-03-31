@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="org.bin.schema.entity.UserAccount">
+ 	<resultMap type="UserAccount" id="userAccountMap">
+ 		<id property="userId" column="user_id" jdbcType="BIGINT"/>
+ 		<result property="name" column="name" jdbcType="VARCHAR"/>
+ 		<result property="account" column="account" jdbcType="VARCHAR"/>
+ 		<result property="password" column="password" jdbcType="VARCHAR"/>
+ 		<result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+ 		<result property="address" column="address" jdbcType="VARCHAR"/>
+ 		<result property="zipCode" column="zip_code" jdbcType="VARCHAR"/>
+ 		<result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+ 		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+ 		<result property="lastLogin" column="last_login" jdbcType="TIMESTAMP"/>
+ 	</resultMap>
+ 	
+ 	<insert id="insertUserAccount" parameterType="UserAccount" useGeneratedKeys="true" keyProperty="id">
+ 		insert into 
+ 			user_account(`name`,`account`,`password`,`mobile`,`address`,`zip_code`,`create_time`,`update_time`,`last_login`)
+ 		values(
+			#{name, jdbcType=VARCHAR},
+			#{account, jdbcType=VARCHAR},
+			#{password, jdbcType=VARCHAR},
+			#{mobile, jdbcType=VARCHAR},
+			#{address, jdbcType=VARCHAR},
+			#{zipCode, jdbcType=VARCHAR},
+			#{createTime, jdbcType=TIMESTAMP},
+			#{updateTime, jdbcType=TIMESTAMP},
+			#{lastLogin, jdbcType=TIMESTAMP}
+ 		)
+ 	</insert>
+ 	
+ 	<select id="getUserAccount" resultMap="userAccountMap">
+ 		select * from user_account
+ 	</select>
+ </mapper>

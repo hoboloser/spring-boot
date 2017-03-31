@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="org.bin.schema.entity.SeckillStock">
+ 	<resultMap type="SeckillStock" id="seckillStockMap">
+ 		<id property="stockId" column="stock_id" jdbcType="BIGINT"/>
+ 		<result property="name" column="name" jdbcType="VARCHAR"/>
+ 		<result property="number" column="number" jdbcType="BIGINT"/>
+ 		<result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+ 		<result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+ 		<result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+ 	</resultMap>
+ 	
+ 	<insert id="insertSeckillStock" parameterType="SeckillStock" useGeneratedKeys="true" keyProperty="id">
+ 		insert into 
+ 			seckill_stock(`name`,`number`,`start_time`,`end_time`,`create_time`)
+ 		values(
+ 			#{name, jdbcType=VARCHAR},
+			#{number, jdbcType=BIGINT},
+			#{startTime, jdbcType=TIMESTAMP},
+			#{endTime, jdbcType=TIMESTAMP},
+			#{createTime, jdbcType=TIMESTAMP}
+ 		)
+ 	</insert>
+ 	
+ 	<update id="updateSeckillStock" parameterType="SeckillStock">
+ 		update seckill_stock
+		<set>
+			<if test="name != null">
+				`name` = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="number != null">
+				`number` = #{number,jdbcType=TIMESTAMP},
+			</if>
+			<if test="startTime != null">
+				`start_time` = #{startTime,jdbcType=VARCHAR},
+			</if>
+			<if test="endTime != null">
+				`end_time` = #{endTime,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where stock_id=#{id}
+ 	</update>
+ 	
+ 	<update id="reduceSeckillStockById" parameterType="Long">
+ 		update seckill_stock
+		set number = number -1
+		where stock_id=#{id}
+		and now() &lt;= end_time
+		and now() >= start_time
+		and number > 0
+ 	</update>
+ 	
+ 	<select id="getSeckillStock" resultMap="seckillStockMap">
+ 		select * from seckill_stock
+ 	</select>
+ 	<select id="getSeckillStockById" resultMap="seckillStockMap" parameterType="Long">
+ 		select * from seckill_stock where stock_id=#{id}
+ 	</select>
+ </mapper>
